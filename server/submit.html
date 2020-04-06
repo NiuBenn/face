@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title></title>
+	</head>
+	<body>
+		<script type="text/javascript">
+			 $("#apply_link_form").submit(function(){
+				parent.layer.close(index); //再执行关闭
+				$.ajax({
+					async: false,
+					type: "POST",
+					url:'http://www.niubenn.xyz:9000/create',
+					contentType : "application/x-www-form-urlencoded; charset=utf-8",
+					data:$("#apply_link_form").serialize(),
+					dataType: "text",
+					success: function () {
+					  },
+					error: function () {
+					}
+				})
+			 })
+		</script>
+		
+		<br /><br />
+		
+		<div id="top" style="height: 60px; width: 300px;  font-size: 22px; color: #8A2BE2;">
+			face注册系统
+		</div>
+		
+		<form id="apply_link_form" action="http://www.niubenn.xyz:1314/input" method="post">
+		　　姓名：<input type="text" name="name" id="link_name" placeholder="请输入您的名字" value="" required="required"><br /><br />
+		　　员工号：<input type="text" name="id" id="id" placeholder="请输入员工号" value="" required="required" ><br /><br />
+		　　注册码：<input type="text" name="number" id="number" placeholder="请输入注册码" value="" required="required"><br /><br />
+		　　		　　		　　	
+			<input id="submit" name="submit" type="submit" value="提交" style="background-color:	#87CEFA;font-size: 20px;width: 66px;height: 32px; border-radius:40%;color:#FCFCFC">
+        </form>
+		
+	</body>
+</html>
