@@ -2,7 +2,7 @@
 #include "../data/data.hpp"
 #include  <cstring>
 
-std::map<string, face_encoding> m_face_encoding;
+std::map<std::string, face_encoding> m_face_encoding;
 
 MYSQL mysql;   
 MYSQL_ROW row;  
@@ -10,11 +10,11 @@ MYSQL_FIELD* field = NULL;
 MYSQL_RES* result;   
 
 int main() {
-
+    srand((int)time(0));
     mysql_init(&mysql);
     if(!mysql_real_connect(&mysql,"localhost","root","root","face",0,NULL,0))
     {     
-        cout << "connect fial\n";
+        std::cout << "connect fial\n";
         return -1;
     }
 
@@ -40,23 +40,23 @@ int main() {
     server.Post("/create", [](const Request& req,
                 Response& res){
                 std::string name = req.get_param_value("name");
-                std::string money = req.get_param_value("id");
+                std::string id = req.get_param_value("id");
                 std::string number = req.get_param_value("number");
                 std::cout << "Get Submit!" <<std::endl;
 
-                if(face_encoding.count(number) > 0) {
+                if(m_face_encoding.count(number) > 0) {
                     time_t now_time = get_time();
-                    if(now_time - face_encoding[number]._time > 600){
+                    if(now_time - m_face_encoding[number]._time > 600){
                         res.set_content("注册码已失效", "text/html");
                     }
                     else {
-                        char* data = face_encoding[number]._data;
+                        char* data = (char*)(m_face_encoding[number]._data);
                         bool ret = registered_face(&mysql, data, name, id);
                         if (ret) {
                             res.set_content("注册成功", "text/html");
                         }
                     }
-                    face_encoding.erase(number);
+                    m_face_encoding.erase(number);
                 }
                 else {
                     res.set_content("无效验证码", "text/html");
@@ -66,9 +66,9 @@ int main() {
     server.Post("/registered_face", [](const Request& req,
                 Response& res){
             std::string body = req.body;
-            std::string number = get_number()
-            
-            memcmp(m_face_encoding[number]._data, body.data(), body.length());
+            std::string number = get_number();
+            char* ptr = (char*)(m_face_encoding[number]._data); 
+            memcmp(ptr, body.data(), body.length());
             m_face_encoding[number]._time = get_time();
             
             res.set_content(number, "text/html");

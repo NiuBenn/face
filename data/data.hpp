@@ -12,10 +12,8 @@
 #include <ctime>
 #define random(x) (rand()%x)
 
-srand((int)time(0));
-
 struct face_encoding {
-    float[256] _data;
+    float _data[256];
     std::time_t _time;
 };
 
