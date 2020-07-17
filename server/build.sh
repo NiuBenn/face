@@ -1,0 +1,2 @@
+rm server
+make
